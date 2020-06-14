@@ -1,6 +1,8 @@
+import Immuto from "immuto-sdk";
 import React from "react";
 import * as Yup from "yup";
-// let im = Immuto.init(true, "https://dev.immuto.io");
+
+let im = Immuto.init(true, "https://dev.immuto.io");
 
 export const FIELDS = {
   EMAIL: "email",
@@ -12,15 +14,17 @@ export const INITIAL_VALUES = {
   [FIELDS.PASSWORD]: "",
 };
 
-export const handleSubmit = (values, actions) => {
+export const handleSubmit = async (values, actions) => {
   let { email, password } = values;
-  //   im.authenticate(email, password)
-  //     .then((authToken) => {
-  //       console.log("auth token = ", authToken);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
+  console.log("submitting", email, password);
+  await im
+    .authenticate("immuto.test@gmail.com", "Test12345!")
+    .then((authToken) => {
+      console.log("auth token = ", authToken);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
   actions.resetForm();
 };
 
