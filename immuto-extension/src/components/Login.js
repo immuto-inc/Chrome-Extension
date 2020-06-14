@@ -2,7 +2,7 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import * as LoginService from "./login.service";
 
-// This is undefined
+const Immuto = window.Immuto // Load global, injected by pre-built immuto.js
 let im = Immuto.init(true, "https://dev.immuto.io");
 
 export default function LoginForm() {

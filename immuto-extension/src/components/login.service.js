@@ -1,7 +1,7 @@
-import Immuto from "immuto-sdk";
 import React from "react";
 import * as Yup from "yup";
 
+const Immuto = window.Immuto // Load global, injected by pre-built immuto.js
 let im = Immuto.init(true, "https://dev.immuto.io");
 
 export const FIELDS = {
