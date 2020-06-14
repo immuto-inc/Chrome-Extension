@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Dashboard from "./Dashboard";
+import LoggedOutDashboard from "./LoggedOutDashboard";
 import Login from "./Login";
 export default function App() {
   const [view, setView] = useState("dashboard");
@@ -15,6 +16,9 @@ export default function App() {
       break;
     case "login":
       viewComponent = <Login redirect={redirect} />;
+      break;
+    case "loggedOutDashboard":
+      viewComponent = <LoggedOutDashboard redirect={redirect} />;
       break;
     default:
       viewComponent = <Dashboard />;

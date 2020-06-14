@@ -1,7 +1,7 @@
 import React from "react";
 import * as Yup from "yup";
 
-const Immuto = window.Immuto // Load global, injected by pre-built immuto.js
+const Immuto = window.Immuto; // Load global, injected by pre-built immuto.js
 let im = Immuto.init(true, "https://dev.immuto.io");
 
 export const FIELDS = {
@@ -16,11 +16,15 @@ export const INITIAL_VALUES = {
 
 export const handleSubmit = async (values, actions) => {
   let { email, password } = values;
-  console.log("submitting", email, password);
+
+  await im.deauthenticate().catch((err) => console.error(err));
+
   await im
-    .authenticate("immuto.test@gmail.com", "Test12345!")
+    .authenticate(email, password)
     .then((authToken) => {
-      console.log("auth token = ", authToken);
+      if (authToken) {
+        console.log("Login Successful");
+      }
     })
     .catch((err) => {
       console.error(err);

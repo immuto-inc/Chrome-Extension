@@ -2,26 +2,13 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import * as LoginService from "./login.service";
 
-const Immuto = window.Immuto // Load global, injected by pre-built immuto.js
-let im = Immuto.init(true, "https://dev.immuto.io");
-
-export default function LoginForm() {
-  const login = async () => {
-    await im
-      .authenticate("immuto.test@gmail.com", "Test12345!")
-      .then((authToken) => {
-        console.log("auth token => ", authToken);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
+export default function Login({ redirect }) {
   return (
     <>
-      <button onClick={() => login()}>Log In Test</button>
-      <br />
-      <h3>Login</h3>
+      <div style={{ display: "inline-flex" }}>
+        <button onClick={() => redirect("dashboard")}>Back</button>
+        <h3>Login</h3>
+      </div>
       <Formik {...LoginService.formikProps}>
         {({ errors, touched, ...props }) => (
           <Form>
