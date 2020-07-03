@@ -9,7 +9,14 @@ chrome.runtime.onMessage.addListener(async (message) => {
             document.body.removeChild(iframe);
         }
     } else if (message.action == "immuto_store") {
-        await handleFileUpload(message.fileInfo, message.fileName)
+        await im.deauthenticate().catch((err) => reject(err));
+        await im
+            .authenticate("immuto.test@gmail.com", "Test12345!")
+            .catch((err) => {
+                reject(err);
+            });
+
+        await handleFileUpload(message.fileContent, message.fileName)
             .then((res) => {
                 console.log(res);
             })

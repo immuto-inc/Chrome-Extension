@@ -30,6 +30,7 @@ chrome.downloads.onChanged.addListener(async (delta) => {
 chrome.runtime.onMessage.addListener(function (message, sender) {
     tabID = sender.tab.id;
     if (message.action == "store backup") {
+        console.log("name", message.name);
         chrome.tabs.sendMessage(tabID, {
             action: "immuto_store",
             fileInfo: currentFileContent,
@@ -63,8 +64,8 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tab.id, {
             action: "immuto_store",
-            content: fileContent,
-            title: "PLACEHOLDER",
+            fileContent: fileContent,
+            fileName: "PLACEHOLDER",
         });
     });
 });
