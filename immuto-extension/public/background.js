@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener(function (message, sender) {
         console.log("name", message.name);
         chrome.tabs.sendMessage(tabID, {
             action: "immuto_store",
-            fileInfo: currentFileContent,
+            fileContent: currentFileContent,
             fileName: message.name,
         });
     } else if (message.action == "no_store") {

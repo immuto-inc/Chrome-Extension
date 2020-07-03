@@ -36,40 +36,41 @@ chrome.runtime.onMessage.addListener(async (message) => {
             .search_records_by_content(message.fileContent)
             .then((result) => {
                 if (!result || !result.records || result.records.length <= 0) {
-                    return;
+                    iframe = document.createElement("iframe");
+                    iframe.src = chrome.runtime.getURL("upload_frame.html");
+                    iframe.style.cssText =
+                        "position:fixed;top:10px;right:10px;display:block;" +
+                        "width:270px;height:180px;z-index:10000;";
+                    document.body.appendChild(iframe);
+                } else {
+                    im.verify_data_management(
+                        result.records[0].contractAddr,
+                        "editable",
+                        message.fileContent
+                    )
+                        .then((verification) => {
+                            if (verification !== false) {
+                                iframe = document.createElement("iframe");
+                                let creator = verification.email;
+                                let timeStamp = verification.timestamp;
+
+                                iframe.src = chrome.runtime.getURL(
+                                    `verification_frame.html?creator=${creator}&timeStamp=${timeStamp}`
+                                );
+                                iframe.style.cssText =
+                                    "position:fixed;top:10px;right:10px;display:block;" +
+                                    "width:270px;height:180px;z-index:10000;";
+                                document.body.appendChild(iframe);
+                            } else {
+                                console.log(
+                                    "could not verify that immuto record"
+                                );
+                            }
+                        })
+                        .catch((err) => {
+                            console.error(err);
+                        });
                 }
-                im.verify_data_management(
-                    result.records[0].contractAddr,
-                    "editable",
-                    message.fileContent
-                )
-                    .then((verification) => {
-                        iframe = document.createElement("iframe");
-                        if (verification !== false) {
-                            iframe.src = chrome.runtime.getURL(
-                                "verification_frame.html"
-                            );
-                            iframe.style.cssText =
-                                "position:fixed;top:10px;right:10px;display:block;" +
-                                "width:270px;height:180px;z-index:10000;";
-                            let f = document.body.querySelectorAll("iframe");
-                            console.log(f);
-                            console.log(f[f.length - 1]);
-                            // f[f.length - 1].getElementById("creator").value =
-                            //     "i am the creator";
-                        } else {
-                            iframe.src = chrome.runtime.getURL(
-                                "upload_frame.html"
-                            );
-                            iframe.style.cssText =
-                                "position:fixed;top:10px;right:10px;display:block;" +
-                                "width:270px;height:180px;z-index:10000;";
-                        }
-                        document.body.appendChild(iframe);
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                    });
             })
             .catch((err) => console.error(err));
     }

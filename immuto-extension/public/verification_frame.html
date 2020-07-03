@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <script src="immuto.js"></script>
+    <script src="verification_frame.js"></script>
 </head>
 <style>
 html, body, iframe, h2 {
@@ -26,15 +27,10 @@ iframe {
 }
 </style>
 <body>
-    <div id="modal-body">
-        <h2>This file exists as an immuto record</h2>
-        <p>Creator: </p>
+    <div id="verification-modal-body">
+        <h2 id="verification-title">This file exists as an immuto record</h2>
         <p id="creator" name="creator"><p>
-        <br />
-        <p>Time Stamp: </p>
         <p id="timeStamp" name="timeStamp"><p>
-        <br />
-        <br />
         <button
             type="button"
             id="exit"
