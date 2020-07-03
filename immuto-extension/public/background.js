@@ -3,6 +3,9 @@ var tabID = -1;
 var currentFileContent;
 
 chrome.downloads.onChanged.addListener(async (delta) => {
+    if (localStorage.IMMUTO_EXTENSION_autoPrompt === "off") {
+        return;
+    }
     if (!delta.state || delta.state.current != "complete") {
         return;
     }
@@ -18,6 +21,8 @@ chrome.downloads.onChanged.addListener(async (delta) => {
             chrome.tabs.sendMessage(tabs[0].id, {
                 action: "does_record_exist",
                 fileContent: currentFileContent,
+                email: localStorage.IMMUTO_email,
+                password: localStorage.IMMUTO_EXTENSION_password,
             });
         });
 
@@ -30,11 +35,12 @@ chrome.downloads.onChanged.addListener(async (delta) => {
 chrome.runtime.onMessage.addListener(function (message, sender) {
     tabID = sender.tab.id;
     if (message.action == "store backup") {
-        console.log("name", message.name);
         chrome.tabs.sendMessage(tabID, {
             action: "immuto_store",
             fileContent: currentFileContent,
             fileName: message.name,
+            email: localStorage.IMMUTO_email,
+            password: localStorage.IMMUTO_EXTENSION_password,
         });
     } else if (message.action == "no_store") {
         chrome.tabs.query({ active: true, currentWindow: true }, function (
@@ -57,15 +63,16 @@ chrome.contextMenus.create({
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     let fileUrl = info.linkUrl;
 
-    let fileContent = await getFileDataFromUrl(fileUrl).catch((err) => {
+    currentFileContent = await getFileDataFromUrl(fileUrl).catch((err) => {
         console.error(err);
     });
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
         chrome.tabs.sendMessage(tab.id, {
-            action: "immuto_store",
-            fileContent: fileContent,
-            fileName: "PLACEHOLDER",
+            action: "does_record_exist",
+            fileContent: currentFileContent,
+            email: localStorage.IMMUTO_email,
+            password: localStorage.IMMUTO_EXTENSION_password,
         });
     });
 });

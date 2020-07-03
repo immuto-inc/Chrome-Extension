@@ -1,14 +1,15 @@
 import React from "react";
+import AutoPrompt from "./AutoPrompt";
 import FileUpload from "./FileUpload";
-const Immuto = window.Immuto; // Load global, injected by pre-built immuto.js
+
+const Immuto = window.Immuto;
 let im = Immuto.init(true, "https://dev.immuto.io");
 export default function LoggedInDashboard({ redirect }) {
     const handleLogout = async () => {
         await im
             .deauthenticate()
             .then((res) => {
-                window.localStorage.password = "";
-                console.log("logged out");
+                window.localStorage.IMMUTO_EXTENSION_password = "";
             })
             .catch((err) => console.error(err));
         redirect("login");
@@ -17,6 +18,7 @@ export default function LoggedInDashboard({ redirect }) {
     return (
         <>
             <div style={{ display: "inline-flex" }}>
+                <AutoPrompt />
                 <FileUpload />
                 <button onClick={() => handleLogout()}>Logout</button>
             </div>

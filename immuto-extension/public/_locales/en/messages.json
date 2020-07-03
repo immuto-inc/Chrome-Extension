@@ -8,7 +8,7 @@
         "description": "Extension description"
     },
     "openContextMenuTitle": {
-        "message": "Backup With Immuto",
+        "message": "Verify/Backup With Immuto",
         "description": "context menu button text"
     }
 }
