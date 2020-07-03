@@ -1,0 +1,14 @@
+{
+    "extName": {
+        "message": "Immuto Button",
+        "description": "Extension name"
+    },
+    "extDesc": {
+        "message": "Immuto Context Menu Button",
+        "description": "Extension description"
+    },
+    "openContextMenuTitle": {
+        "message": "Backup With Immuto",
+        "description": "context menu button text"
+    }
+}

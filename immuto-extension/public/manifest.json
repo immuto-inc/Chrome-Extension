@@ -1,17 +1,41 @@
 {
-  "manifest_version": 2,
-  "short_name": "Immuto Extension",
-  "name": "Immuto Extension",
-  "icons": {
-    "16": "favicon.ico",
-    "48": "logo192.png",
-    "128": "logo512.png"
-  },
-  "content_security_policy": "script-src 'self' 'sha256-WDhufSqZOEoWULzS4Nwz11MNyHzZClVYbQ2JSt1vfkw'; object-src 'self'",
-  "permissions": [],
-  "version": "0.0.1",
-  "browser_action": {
-    "default_popup": "index.html",
-    "default_title": "Immuto"
-  }
+    "manifest_version": 2,
+    "short_name": "Immuto Extension",
+    "name": "Immuto Extension",
+    "icons": {
+        "16": "favicon.ico",
+        "48": "logo192.png",
+        "128": "logo512.png"
+    },
+    "permissions": [
+        "downloads",
+        "activeTab",
+        "contextMenus",
+        "webRequest",
+        "webRequestBlocking",
+        "tabs",
+        "http://*/",
+        "https://*/"
+    ],
+    "default_locale": "en",
+    "content_security_policy": "script-src 'self' 'sha256-WDhufSqZOEoWULzS4Nwz11MNyHzZClVYbQ2JSt1vfkw'; object-src 'self'",
+    "version": "0.1.0",
+    "browser_action": {
+        "default_popup": "index.html",
+        "default_title": "Immuto"
+    },
+    "content_scripts": [
+        {
+            "js": ["content.js", "immuto.js"],
+            "all_frames": true,
+            "matches": ["<all_urls>"]
+        }
+    ],
+    "background": { "scripts": ["background.js"], "persistent": true },
+    "web_accessible_resources": [
+        "upload_frame.html",
+        "upload_frame.js",
+        "verification_frame.html",
+        "verification_frame.js"
+    ]
 }

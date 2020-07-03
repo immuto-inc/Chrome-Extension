@@ -1110,7 +1110,7 @@ exports.init = function(debug, debugHost) {
             var xhr = new_HTTP();
             let sendstring = ""
 
-            xhr.open("POST", this.host + "/submit-new-data-upload", true);
+            xhr.open("POST", this.host + "/submit-new-data-upload", true); 
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4 && xhr.status === 200) {
@@ -39787,7 +39787,6 @@ function parseKeys (buffer) {
           }
         default: throw new Error('unknown key id ' + subtype)
       }
-      throw new Error('unknown key type ' + type)
     case 'ENCRYPTED PRIVATE KEY':
       data = asn1.EncryptedPrivateKey.decode(data, 'der')
       data = decrypt(data, password)
@@ -39811,7 +39810,6 @@ function parseKeys (buffer) {
           }
         default: throw new Error('unknown key id ' + subtype)
       }
-      throw new Error('unknown key type ' + type)
     case 'RSA PUBLIC KEY':
       return asn1.RSAPublicKey.decode(data, 'der')
     case 'RSA PRIVATE KEY':
@@ -67174,7 +67172,6 @@ EventEmitter.prototype.emit = function emit(type) {
       err.context = er;
       throw err;
     }
-    return false;
   }
 
   handler = events[type];

@@ -6,10 +6,10 @@ const Immuto = window.Immuto; // Load global, injected by pre-built immuto.js
 let im = Immuto.init(true, "https://dev.immuto.io");
 
 export default function Dashboard({ redirect }) {
-  if (im.authToken) {
-    console.log("token: ", im.authToken);
-    return <LoggedInDashboard redirect={redirect} />;
-  } else {
-    return <LoggedOutDashboard redirect={redirect} />;
-  }
+    if (im.authToken) {
+        console.log("token: ", im.authToken);
+        return <LoggedInDashboard redirect={redirect} />;
+    } else {
+        return <LoggedOutDashboard redirect={redirect} />;
+    }
 }

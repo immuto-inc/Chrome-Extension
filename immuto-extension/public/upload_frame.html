@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <script src="immuto.js"></script>
+    <script src="upload_frame.js"></script>
+</head>
+<style>
+html, body, iframe, h2 {
+    margin: 0px, 3px;
+    border: 3px;
+    padding: 0px, 5px;
+    display: block;
+    width: 100vw;
+    height: 100%;
+    background: lightBlue;
+    color: black;
+    z-index: 1000000;
+    overflow: hidden
+}
+h2 {
+    height: 50px;
+    font-size: 20px;
+}
+iframe {
+    height: calc(100vh - 50px);
+}
+</style>
+<body>
+    <div id="modal-body">
+        <h2>Would you like to store a backup of this file?</h2>
+        <label for="name">Record Name: </label>
+        <input
+            type="text"
+            id="name"
+            name="name"
+        />
+        <br />
+        <br />
+        <button
+            type="button"
+            id="store"
+            name="store"
+        >Yes</button>
+        <button
+            type="button"
+            id="exit"
+            name="exit"
+        >No</button>
+    </div>
+</body>
+</html>
