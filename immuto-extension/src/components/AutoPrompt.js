@@ -4,9 +4,11 @@ export default function AutoPrompt() {
     const [autoPrompt, setAutoPrompt] = useState("off");
 
     useEffect(() => {
+        // Gets the toggle state from localStorage
         setAutoPrompt(window.localStorage.IMMUTO_EXTENSION_autoPrompt);
     }, []);
 
+    // Hanldes toggling auto prompt on and off
     const handleClick = () => {
         if (autoPrompt === "on") {
             setAutoPrompt("off");

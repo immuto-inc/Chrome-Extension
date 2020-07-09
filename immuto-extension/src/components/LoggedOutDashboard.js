@@ -1,11 +1,11 @@
 import React from "react";
-const Immuto = window.Immuto; // Load global, injected by pre-built immuto.js
-let im = Immuto.init(true, "https://dev.immuto.io");
+
 export default function LoggedOutDashboard({ redirect }) {
     return (
         <>
+            <h2>Immuto</h2>
             <button onClick={() => redirect("login")}>Login</button>
-            <a href="https://app.immuto.io/register">
+            <a href={"https://app.immuto.io/register"} target="_blank">
                 <button>Register</button>
             </a>
         </>

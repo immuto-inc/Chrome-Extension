@@ -2,9 +2,11 @@ var im;
 var iframe;
 var fileInfo;
 
+// Listens for messages sent from background.js
 chrome.runtime.onMessage.addListener(async (message) => {
     im = Immuto.init(true, "https://dev.immuto.io");
     if (message.action == "no_store") {
+        // Clears all iframes from the dom
         let frames = document.getElementsByTagName("iframe");
         for (let i = 0; i < frames.length; ++i) {
             document.body.removeChild(frames[i]);
@@ -15,6 +17,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
             console.error(err);
         });
 
+        // Creates an immuto upload
         await handleFileUpload(
             message.fileContent,
             message.fileName,
@@ -27,11 +30,13 @@ chrome.runtime.onMessage.addListener(async (message) => {
             .catch((err) => {
                 console.error(err);
             });
+
+        // Clears all iframes from the dom
         let frames = document.getElementsByTagName("iframe");
         for (let i = 0; i < frames.length; ++i) {
             document.body.removeChild(frames[i]);
         }
-    } else if (message.action == "does_record_exist") {
+    } else if (message.action == "immuto_verify") {
         let loggedIn = true;
         await im.deauthenticate().catch((err) => reject(err));
         await im.authenticate(message.email, message.password).catch((err) => {
@@ -43,10 +48,13 @@ chrome.runtime.onMessage.addListener(async (message) => {
             return;
         }
 
+        // Looks for records with the same file content
         await im
             .search_records_by_content(message.fileContent)
             .then((result) => {
                 if (!result || !result.records || result.records.length <= 0) {
+                    // If no records were found with the given content, it gives the user
+                    // the option to create the record by providing the following dialog
                     iframe = document.createElement("iframe");
                     iframe.src = chrome.runtime.getURL("upload_frame.html");
                     iframe.style.cssText =
@@ -54,6 +62,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
                         "width:270px;height:240px;z-index:10000;";
                     document.body.appendChild(iframe);
                 } else {
+                    // If records were found with the given content, we double check its validity
+                    // with the immuto api
                     im.verify_data_management(
                         result.records[0].contractAddr,
                         "editable",
@@ -65,6 +75,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
                                 let creator = verification.email;
                                 let timeStamp = verification.timestamp;
 
+                                // Passes in the creator's email, and the records timestamp into
+                                // the iframe
                                 iframe.src = chrome.runtime.getURL(
                                     `verification_frame.html?creator=${creator}&timeStamp=${timeStamp}`
                                 );
@@ -87,6 +99,7 @@ chrome.runtime.onMessage.addListener(async (message) => {
     }
 });
 
+// Uploads the file to immuto if it is not already backed up
 function handleFileUpload(fileContent, fileName, email, password) {
     return new Promise(async (resolve, reject) => {
         await im.deauthenticate().catch((err) => reject(err));

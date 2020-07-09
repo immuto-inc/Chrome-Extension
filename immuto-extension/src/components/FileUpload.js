@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const Immuto = window.Immuto; // Load global, injected by pre-built immuto.js
+const Immuto = window.Immuto;
 let im = Immuto.init(true, "https://dev.immuto.io");
 
 export default function FileUpload() {
@@ -17,18 +17,20 @@ export default function FileUpload() {
             console.error(err);
         });
 
+        // Uploads the stringified file
         let recordID = await im
             .upload_file_data(
                 fileContent,
                 file.name,
-                window.localStorage.password
+                window.localStorage.IMMUTO_EXTENSION_password
             )
             .catch((err) => {
                 console.error(err);
             });
 
+        // Verifies that the file was uploaded correctly
         let verification = await im
-            .verify_data_management(recordID, "basic", fileContent)
+            .verify_data_management(recordID, "editable", fileContent)
             .catch((err) => {
                 console.error(err);
             });
@@ -38,14 +40,17 @@ export default function FileUpload() {
         } else {
             console.error("File upload was unsuccessful");
         }
+        setFile("");
+        setFileName("");
     };
 
+    // Converts file to string so that it can be uploaded with the immuto api
     const get_file_content = (file) => {
         return new Promise((resolve, reject) => {
             var reader = new FileReader();
             reader.readAsArrayBuffer(file);
             reader.onload = (evt) => {
-                resolve(evt.target.result.toString());
+                resolve(new Uint8Array(evt.target.result).toString());
             };
         });
     };

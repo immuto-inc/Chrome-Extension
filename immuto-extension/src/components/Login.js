@@ -7,6 +7,7 @@ export default function Login({ redirect }) {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    // Logs in the user
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -35,6 +36,7 @@ export default function Login({ redirect }) {
             {error ? error : null}
             <form onSubmit={(e) => handleSubmit(e)}>
                 <input
+                    autoFocus
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -44,9 +46,7 @@ export default function Login({ redirect }) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
-                <button onClick={() => redirect("loggedOutDashboard")}>
-                    Back
-                </button>
+                <button onClick={() => redirect("dashboard")}>Back</button>
                 <button type="submit">Login</button>
             </form>
         </>
